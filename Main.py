@@ -1,3 +1,4 @@
+# %%
 import discord
 from datetime import datetime
 # import os, re
@@ -17,15 +18,6 @@ with open(file_path, 'r', encoding="UTF-8") as f:
     lines = f.readlines()
     for line in lines:
         temp.append(line.replace('\n', ''))
-
-# 기록용 파일 열기
-log_file_path = "ConversationLog.txt"
-log_f = open(log_file_path, 'a', encoding="UTF-8")
-
-# 시간 기록
-now = datetime.now()
-formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
-log_f.write('\n' + formatted_date_time + '\n')
 
 # 토큰 변수에 저장
 TOKEN = temp[0]
@@ -82,11 +74,6 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         trim_text = message.content.replace(" ", "")
 
-        def log_message(auth, msgcontent):
-            msg = str(auth) + ": " + str(msgcontent)
-            print(msg)
-            log_f.write(msg + '\n')
-
         if message.author == self.user:
             return
         elif (message.content == "[로아콘도움"):
@@ -114,9 +101,8 @@ class MyClient(discord.Client):
             # embed = discord.Embed(title=str(pict_dir[trim_text]))
             embed.set_image(url='attachment://image.png')
             await message.channel.send(embed=embed, file=image)
-            log_message(message.author, message.content)
         else: 
-            log_message(message.author, message.content)
+            return
 
 # 디스코드 봇 실행
 intents = discord.Intents.default()
