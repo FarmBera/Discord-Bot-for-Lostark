@@ -81,29 +81,32 @@ class MyClient(discord.Client):
         # 봇 상태 바꾸기
         await self.change_presence(
             status=discord.Status.online, 
-            activity=discord.Game("이모티콘 잔뜩 준비 완료")
+            activity=discord.Game("이모티콘 잔뜩 준비")
         )
     
     async def on_message(self, message):
         trim_text = message.content.replace(" ", "")
+        
         if message.author == self.user:
             return
         elif (message.content == "[로아콘도움"):
+            embed=discord.Embed(
+                title="봇 명령어 모음 (스프레드시트)", 
+                url="https://docs.google.com/spreadsheets/...", 
+                description="자세한 내용은 상단 링크 참조",
+                color=0x00ff56
+            )
             image = discord.File("image/playtogeth.png", filename="image.png")
-            embed = discord.Embed(title="지원이 도착했습니다!", color=0x00ff56)
+            # embed = discord.Embed(title="명령어에 대한 지원이 도착했습니다!", color=0x00ff56)
             embed.set_thumbnail(url='attachment://image.png')
-            # 모든 명령어 뺴내기
-            all_commands = ""
+            all_commands = "" # 모든 명령어 뺴내기
             for key in pict_dir.keys():
                 all_commands += str(f"{key}, ")
-            embed.add_field(
-                name="사용 가능한 명령어", 
-                value=all_commands, 
-                inline=True
-            )
+            # embed.add_field(name="사용 가능한 명령어", value=all_commands, inline=True)
+            embed.add_field(name="명령어에 대한 지원이 도착했습니다!", value=all_commands, inline=True)
             await message.channel.send(embed=embed, file=image)
         elif (message.content == '[이스터에그'):
-            await message.channel.send('강산씌!')
+            await message.channel.send(f'강산씌! 발견하셨군요!\n하지만 별거 없다능')
         elif (trim_text == '' or None):
                 return
         elif (trim_text in pict_dir.keys()): 
