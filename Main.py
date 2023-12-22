@@ -1,32 +1,24 @@
 # %%
 import discord
 from datetime import datetime
-# import os, re
-# import time
-# import urllib.request
 
 TOKEN = None
 CHANNEL_ID = None
-# PREFIX = '[' # 붙일 접두사 (지금은 작동 안함)
 
-temp = [] # 임시 배열
+temp = []
 
-# 토큰 저장된 파일 읽어서 
+# Read Tokens
 file_path = "TOKEN.txt"
 with open(file_path, 'r', encoding="UTF-8") as f:
     lines = f.readlines()
     for line in lines:
         temp.append(line.replace('\n', ''))
 
-# 토큰 변수에 저장
+# Save Tokens
 TOKEN = temp[0]
 CHANNEL_ID = temp[1]
 
-# %%
-# Working
-""" 현재 나는 오류
-파일 이름 불러와서 출력하면 인코딩 문제로 딕셔너리에서 값을 뽑아낼 수가 없음
-"""
+# Picture Directory
 pict_dir = {
     "[뀨": "image/ku.png",
     "[눈물팡": "image/sosaaaadd.png",
@@ -116,16 +108,16 @@ pict_dir = {
     "[카멘음": "image_se/kamenummm.png",
 }
 
-# %%
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
-        # 봇 상태 바꾸기
+        # Change Bot State
         await self.change_presence(
             status=discord.Status.online, 
-            activity=discord.Game("이모티콘 잔뜩 준비")
+            activity=discord.Game("로아콘 준비")
         )
     
+    # on Message imcoming
     async def on_message(self, message):
         trim_text = message.content.replace(" ", "")
         
@@ -135,36 +127,31 @@ class MyClient(discord.Client):
             embed=discord.Embed(
                 title="봇 명령어 모음 (스프레드시트)", 
                 url="https://docs.google.com/spreadsheets/...", 
-                description="자세한 내용은 상단 링크 참조",
+                description="자세한 내용은 상단 링크 참조\n현재 비공개 Alpha 테스트 버전입니다. 기능이 불안정할 수 있습니다. ",
                 color=0x00ff56
             )
             image = discord.File("image/playtogeth.png", filename="image.png")
-            # embed = discord.Embed(title="명령어에 대한 지원이 도착했습니다!", color=0x00ff56)
             embed.set_thumbnail(url='attachment://image.png')
             all_commands = "" # 모든 명령어 뺴내기
             for key in pict_dir.keys():
                 all_commands += str(f"{key}, ")
-            # embed.add_field(name="사용 가능한 명령어", value=all_commands, inline=True)
             embed.add_field(name="명령어에 대한 지원이 도착했습니다!", value=all_commands, inline=True)
             await message.channel.send(embed=embed, file=image)
             await message.delete()
         elif (message.content == '[이스터에그'):
-            await message.channel.send(f'강산씌! 발견하셨군요!\n하지만 별거 없다능')
-            await message.delete()
+            await message.channel.send(f'이스터에그를 발견하셨군요! 하지만 별거 없다능\n(버전업 되면 뭔가 생길수도...)')
         elif (trim_text == '' or None):
                 return
         elif (trim_text in pict_dir.keys()): 
             image = discord.File(pict_dir[trim_text], filename="image.png")
             embed = discord.Embed()
-            # embed = discord.Embed(title=str(pict_dir[trim_text]), color=0x00ff56)
-            # embed = discord.Embed(title=str(pict_dir[trim_text]))
             embed.set_image(url='attachment://image.png')
             await message.channel.send(embed=embed, file=image)
             await message.delete()
         else:
             return
 
-# 디스코드 봇 실행
+# Execute Discord Bot
 intents = discord.Intents.default()
 intents.message_content = True
 client = MyClient(intents=intents)
