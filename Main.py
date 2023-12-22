@@ -28,7 +28,7 @@ pict_dir = {
     "[모무룩": "image/saaddd.png",
     "[멘탈": "image/mental.png",
     "[못참지": "image/cannot.png",
-    "[멈춰]": "image/stop.png",
+    "[멈춰": "image/stop.png",
     "[문열어": "image/openthedoor.png",
     "[물음표": "image/whaaat.png",
     "[물끄럼": "image/lookstraight.png",
@@ -36,10 +36,11 @@ pict_dir = {
     "[빛": "image/light.png",
     "[빠직": "image/bazik.png",
     "[신나": "image/happpy.png",
+    "[슬퍼": "image/sad.png",
     "[안줘": "image/nogive.png",
-    "[웃기구요]": "image/sofunny.png",
+    "[웃기구요": "image/sofunny.png",
     "[이이잉": "image/yiiiing.png",
-    "[정말이요]": "image/really.png",
+    "[정말이요": "image/really.png",
     "[줘": "image/giveme.png",
     "[좋아요": "image/good.png",
     "[죽은척": "image/notdeath.png",
@@ -124,24 +125,34 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         elif (message.content == "[로아콘도움"):
+            # Bring All Commands
+            all_commands = []
+            result = "" # Output Text
+            for key in pict_dir.keys():
+                all_commands.append(str(f"{key}"))
+            all_commands.sort() # Sorting
+            for key in all_commands:
+                result += str(f"{key}")
+                if (all_commands[-1]) != key: 
+                    result += str(f", ")
+            result = f"사용 가능한 명령어 개수: {len(all_commands)}\n{result}"
+            
+            # Create Discord Embed
             embed=discord.Embed(
                 title="봇 명령어 모음 (스프레드시트)", 
                 url="https://docs.google.com/spreadsheets/...", 
-                description="자세한 내용은 상단 링크 참조\n현재 비공개 Alpha 테스트 버전입니다. 기능이 불안정할 수 있습니다. ",
+                description="봇 명령어 검색 및 기타 자세한 내용은 상단 링크 참조\n현재 비공개 알파 테스트 버전입니다. 일부 기능이 불안정 할 수 있습니다",
                 color=0x00ff56
             )
             image = discord.File("image/playtogeth.png", filename="image.png")
             embed.set_thumbnail(url='attachment://image.png')
-            all_commands = "" # 모든 명령어 뺴내기
-            for key in pict_dir.keys():
-                all_commands += str(f"{key}, ")
-            embed.add_field(name="명령어에 대한 지원이 도착했습니다!", value=all_commands, inline=True)
+            embed.add_field(name="명령어에 대한 지원이 도착했습니다!", value=result, inline=True)
             await message.channel.send(embed=embed, file=image)
             await message.delete()
         elif (message.content == '[이스터에그'):
             await message.channel.send(f'이스터에그를 발견하셨군요! 하지만 별거 없다능\n(버전업 되면 뭔가 생길수도...)')
         elif (trim_text == '' or None):
-                return
+            return
         elif (trim_text in pict_dir.keys()): 
             image = discord.File(pict_dir[trim_text], filename="image.png")
             embed = discord.Embed()
