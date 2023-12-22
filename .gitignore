@@ -1,3 +1,17 @@
+# MacOS Dump File
+.DS_Store
+
+# Image Directory
+image_real
+image
+image_cat
+image_kong
+image_se
+
+#################
+#################
+#################
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
