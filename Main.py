@@ -1,6 +1,8 @@
 # %%
 import discord
-from datetime import datetime
+from datetime import datetime, timedelta
+# import time
+# import pytz
 
 TOKEN = None
 CHANNEL_ID = None
@@ -120,6 +122,24 @@ class MyClient(discord.Client):
     
     # on Message imcoming
     async def on_message(self, message):
+        def send_log(picture, time, user, channel, guild):
+            # 기록용 파일 열기
+            log_file_path = "LogFile.txt"
+            log_f = open(log_file_path, 'a', encoding="UTF-8")
+            
+            # 시간 기록
+            # now = datetime.now()
+            # formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
+            # log_f.write(f"\n{user}//{formatted_date_time} //>> Sent Command //{picture} at //{guild} //{channel}")
+            
+            time = time + timedelta(hours=9)
+            time = time.strftime("%Y-%m-%d %H:%M:%S")
+            log_f.write(f"\n{user}//{time} //>> Sent Command //{picture} at //{guild} //{channel}")
+            # print(f"'{user}': Sent Command '{picture}'")
+            # print(f"{channel}")
+            # 파일 닫기
+            log_f.close()
+        
         trim_text = message.content.replace(" ", "")
         
         if message.author == self.user:
@@ -141,7 +161,7 @@ class MyClient(discord.Client):
             embed=discord.Embed(
                 title="봇 명령어 모음 (스프레드시트)", 
                 url="https://docs.google.com/spreadsheets/...", 
-                description="봇 명령어 검색 및 기타 자세한 내용은 상단 링크 참조\n현재 비공개 알파 테스트 버전입니다. 일부 기능이 불안정 할 수 있습니다",
+                description="봇 명령어 검색 및 기타 자세한 내용은 상단 링크 참조\n현재 비공개 알파 테스트 버전입니다. 일부 기능이 불안정 할 수 있습니다. ",
                 color=0x00ff56
             )
             image = discord.File("image/playtogeth.png", filename="image.png")
@@ -149,16 +169,18 @@ class MyClient(discord.Client):
             embed.add_field(name="명령어에 대한 지원이 도착했습니다!", value=result, inline=True)
             await message.channel.send(embed=embed, file=image)
             await message.delete()
+            send_log("[로아콘도움", message.created_at, message.author, message.channel, message.guild)
         elif (message.content == '[이스터에그'):
             await message.channel.send(f'이스터에그를 발견하셨군요! 하지만 별거 없다능\n(버전업 되면 뭔가 생길수도...)')
-        elif (trim_text == '' or None):
-            return
+            send_log("[이스터에그", message.created_at, message.author, message.channel, message.guild)
+        elif (trim_text == '' or None): return
         elif (trim_text in pict_dir.keys()): 
             image = discord.File(pict_dir[trim_text], filename="image.png")
             embed = discord.Embed()
             embed.set_image(url='attachment://image.png')
             await message.channel.send(embed=embed, file=image)
             await message.delete()
+            send_log(trim_text, message.created_at, message.author, message.channel, message.guild)
         else:
             return
 
