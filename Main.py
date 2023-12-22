@@ -9,10 +9,9 @@ TOKEN = None
 CHANNEL_ID = None
 # PREFIX = '[' # 붙일 접두사 (지금은 작동 안함)
 
-# 임시 배열
-temp = []
+temp = [] # 임시 배열
 
-# 토큰 불러오기 (토큰 저장된 파일 읽어서 )
+# 토큰 저장된 파일 읽어서 
 file_path = "TOKEN.txt"
 with open(file_path, 'r', encoding="UTF-8") as f:
     lines = f.readlines()
@@ -23,45 +22,59 @@ with open(file_path, 'r', encoding="UTF-8") as f:
 TOKEN = temp[0]
 CHANNEL_ID = temp[1]
 
-
+# %%
 # Working
 """ 현재 나는 오류
-파일 이름 불러와서 출력하면 
-한글 인코딩 문제로 딕셔너리에서 key 값을 이용한 value를 뽑아낼 수가 없음
+파일 이름 불러와서 출력하면 인코딩 문제로 딕셔너리에서 값을 뽑아낼 수가 없음
 """
 pict_dir = {
-    "[안줘": "image/01_모코코콘1_14_안줘.png",
-    "[눈물팡": "image/01_모코코콘1_02_눈물팡_.png",
-    "[죽은척": "image/02_모코코콘2_25_죽은척.png",
-    "[놀자에몽": "image/00_SE_놀자에몽.png",
-    "[두렵다": "image/02_모코코콘2_12_두렵다.png",
-    "[빠직": "image/01_모코코콘1_17_빠직.png",
-    "[놀자에요": "image/00_SE_놀자에요.png",
-    "[핥짝": "image/02_모코코콘2_18_핥짝.png",
-    "[모무룩": "image/01_모코코콘1_24_모무룩.png",
-    "[신나": "image/02_모코코콘2_28_신나.png",
-    "[멘탈": "image/01_모코코콘1_07_멘탈.png",
-    "[빛": "image/02_모코코콘2_05_빛.png",
-    "[방긋": "image/01_모코코콘1_09_방긋.png",
-    "[좋아요": "image/02_모코코콘2_03_좋아요.png",
-    "[호에엥": "image/02_모코코콘2_02_호에엥.png",
-    "[못참지": "image/02_모코코콘2_19_못참지.png",
-    "[헤헷": "image/02_모코코콘2_09_헤헷.png",
-    "[줘": "image/01_모코코콘1_13_줘.png",
-    "[물끄럼": "image/01_모코코콘1_12_물끄럼.png",
-    "[ㅋㅋㅋ": "image/01_모코코콘1_06_ㅋㅋㅋ.png",
-    "[이이잉": "image/02_모코코콘2_08_이이잉.png",
-    "[카멘음": "image/00_SE_카멘_음.png",
-    "[문열어": "image/01_모코코콘1_25_문열어.png",
-    "[물음표": "image/01_모코코콘1_08_물음표.png",
-    "[히죽": "image/02_모코코콘2_11_히죽.png",
-    "[뀨": "image/02_모코코콘2_24_뀨.png",
-    "[침묵": "image/02_모코코콘2_13_침묵.png",
-    "[멈춰]": "image/02_모코코콘2_26_멈춰!.png",
+    "[뀨": "image/ku.png",
+    "[눈물팡": "image/sosaaaadd.png",
+    "[놀자에요": "image/playtogeth.png",
+    "[놀자에몽": "image/playmong.png",
+    "[두렵다": "image/afraid.png",
+    "[모무룩": "image/saaddd.png",
+    "[멘탈": "image/mental.png",
+    "[못참지": "image/cannot.png",
+    "[멈춰]": "image/stop.png",
+    "[문열어": "image/openthedoor.png",
+    "[물음표": "image/whaaat.png",
+    "[물끄럼": "image/lookstraight.png",
+    "[방긋": "image/banguht.png",
+    "[빛": "image/light.png",
+    "[빠직": "image/bazik.png",
+    "[신나": "image/happpy.png",
+    "[안줘": "image/nogive.png",
+    "[이이잉": "image/yiiiing.png",
+    "[줘": "image/giveme.png",
+    "[좋아요": "image/good.png",
+    "[죽은척": "image/notdeath.png",
+    "[침묵": "image/nocomment.png",
+    "[ㅋㅋㅋ": "image/zzz.png",
+    "[카멘음": "image/kamenummm.png",
+    "[호에엥": "image/wooow.png",
+    "[핥짝": "image/hehheh.png",
+    "[헤헷": "image/hahat.png",
+    "[히죽": "image/smile.png",
+    
+    # 응애 모코콩
+    "[감사콩": "image_kong/thankyou.png",
+    "[물줘콩": "image_kong/waterme.png",
+    "[씨익콩": "image_kong/zkong.png",
+    "[노래콩": "image_kong/songkong.png",
+    "[뿅콩": "image_kong/ppongkong.png",
+    "[더줘콩": "image_kong/givememorekong.png",
+    "[도망콩": "image_kong/runkong.png",
+    "[잘자콩": "image_kong/goodnightkong.png",
+    "[냠냠콩": "image_kong/nyamyanmkong.png",
+    "[촉촉콩": "image_kong/sadkong.png",
+    "[꺼억콩": "image_kong/fullkong.png",
+    "[츄릅콩": "image_kong/yummykong.png",
 
+    # Special Edition
 }
 
-
+# %%
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
@@ -70,14 +83,13 @@ class MyClient(discord.Client):
             status=discord.Status.online, 
             activity=discord.Game("이모티콘 잔뜩 준비 완료")
         )
-
+    
     async def on_message(self, message):
         trim_text = message.content.replace(" ", "")
-
         if message.author == self.user:
             return
         elif (message.content == "[로아콘도움"):
-            image = discord.File("image/00_SE_놀자에요.png", filename="image.png")
+            image = discord.File("image/playtogeth.png", filename="image.png")
             embed = discord.Embed(title="지원이 도착했습니다!", color=0x00ff56)
             embed.set_thumbnail(url='attachment://image.png')
             # 모든 명령어 뺴내기
@@ -101,7 +113,7 @@ class MyClient(discord.Client):
             # embed = discord.Embed(title=str(pict_dir[trim_text]))
             embed.set_image(url='attachment://image.png')
             await message.channel.send(embed=embed, file=image)
-        else: 
+        else:
             return
 
 # 디스코드 봇 실행
