@@ -1,5 +1,14 @@
 # Update Log
 
+For more information, check out the "UPDATE.md" file.
+
+## ver 0.2.3 Release
+
+- 토큰 불러오는 코드 수정
+- 명령어와 맞지 않는 이미지 명령어 삭제
+- 새로운 이모티콘 추가
+- `[로아콘도움` 명령어에 대해서 도움말 내용 추가, 공지사항 내용 추가
+
 ## ver 0.2.2
 
 - 명령어 사용 내역을 기록해주는 기능 추가

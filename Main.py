@@ -1,27 +1,18 @@
 # %%
 import discord
 from datetime import datetime, timedelta
-# import time
-# import pytz
 
 TOKEN = None
-CHANNEL_ID = None
-
-temp = []
-
-# Read Tokens
 file_path = "TOKEN.txt"
-with open(file_path, 'r', encoding="UTF-8") as f:
-    lines = f.readlines()
-    for line in lines:
-        temp.append(line.replace('\n', ''))
 
-# Save Tokens
-TOKEN = temp[0]
-CHANNEL_ID = temp[1]
+# Read TOKEN New
+with open(file_path, 'r', encoding="UTF-8") as f: 
+    TOKEN = f.read()
+f.close()
 
 # Picture Directory
 pict_dir = {
+    # 오리지날 로아콘
     "[뀨": "image/ku.png",
     "[눈물팡": "image/sosaaaadd.png",
     "[놀자에요": "image/playtogeth.png",
@@ -40,12 +31,19 @@ pict_dir = {
     "[신나": "image/happpy.png",
     "[슬퍼": "image/sad.png",
     "[안줘": "image/nogive.png",
+    "[영차": "image/cheerup.png",
     "[웃기구요": "image/sofunny.png",
+    "[웃프네요": "image/funbutnotfun.png",
+    "[추천": "image/suggestion.png",
+    "[멋쩍": "image/museok2.png",
+    "[뭐라고요": "image/whatyousay.png",
     "[이이잉": "image/yiiiing.png",
     "[정말이요": "image/really.png",
     "[줘": "image/giveme.png",
+    "[머쓱": "image/museok2.png",
     "[좋아요": "image/good.png",
     "[죽은척": "image/notdeath.png",
+    "[짝짝": "image/clapclap.png",
     "[침묵": "image/nocomment.png",
     "[ㅋㅋㅋ": "image/zzz.png",
     "[호에엥": "image/wooow.png",
@@ -79,7 +77,7 @@ pict_dir = {
     "[냐아아": "image_cat/cat_haaaappppyy.png",
     "[냐호": "image_cat/cat_yahoo.png",
     "[냥배부름": "image_cat/cat_full.png",
-    "[냥해탈": "image_cat/cat_hetal.png",
+    # "[냥해탈": "image_cat/cat_hetal.png", # 이미지랑 안맞음
     "[냥냠냠": "image_cat/cat_yumyum.png",
     "[냥냥": "image_cat/cat_meow.png",
     "[냥먼산": "image_cat/cat_farmountain.png",
@@ -127,23 +125,17 @@ class MyClient(discord.Client):
             log_file_path = "LogFile.txt"
             log_f = open(log_file_path, 'a', encoding="UTF-8")
             
-            # 시간 기록
-            # now = datetime.now()
-            # formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
-            # log_f.write(f"\n{user}//{formatted_date_time} //>> Sent Command //{picture} at //{guild} //{channel}")
-            
             time = time + timedelta(hours=9)
             time = time.strftime("%Y-%m-%d %H:%M:%S")
             log_f.write(f"\n{user}//{time} //>> Sent Command //{picture} at //{guild} //{channel}")
-            # print(f"'{user}': Sent Command '{picture}'")
-            # print(f"{channel}")
-            # 파일 닫기
             log_f.close()
         
         trim_text = message.content.replace(" ", "")
         
         if message.author == self.user:
             return
+
+        # 도움말
         elif (message.content == "[로아콘도움"):
             # Bring All Commands
             all_commands = []
@@ -155,13 +147,19 @@ class MyClient(discord.Client):
                 result += str(f"{key}")
                 if (all_commands[-1]) != key: 
                     result += str(f", ")
-            result = f"사용 가능한 명령어 개수: {len(all_commands)}\n{result}"
-            
+            result = f"사용 가능한 명령어: {len(all_commands)}개\n{result}"
             # Create Discord Embed
             embed=discord.Embed(
                 title="봇 명령어 모음 (스프레드시트)", 
                 url="https://docs.google.com/spreadsheets/...", 
-                description="봇 명령어 검색 및 기타 자세한 내용은 상단 링크 참조\n현재 비공개 알파 테스트 버전입니다. 일부 기능이 불안정 할 수 있습니다. ",
+                description="""
+                봇 명령어 검색 및 기타 자세한 내용은 상단 링크 참조  
+                - 현재 비공개 알파 테스트 버전입니다.
+                * 요청량이 많다면 일부 기능이 불안정 할 수 있습니다.  
+                
+                > **버그 제보**는 id "비공개" 한테 DM 주세용
+                > 건의사항, 개선점, 피드백 환영합니다!!!!
+                """, 
                 color=0x00ff56
             )
             image = discord.File("image/playtogeth.png", filename="image.png")
@@ -169,11 +167,17 @@ class MyClient(discord.Client):
             embed.add_field(name="명령어에 대한 지원이 도착했습니다!", value=result, inline=True)
             await message.channel.send(embed=embed, file=image)
             await message.delete()
-            send_log("[로아콘도움", message.created_at, message.author, message.channel, message.guild)
+            send_log(trim_text, message.created_at, message.author, message.channel, message.guild)
+        
+        # 이스터에그
         elif (message.content == '[이스터에그'):
             await message.channel.send(f'이스터에그를 발견하셨군요! 하지만 별거 없다능\n(버전업 되면 뭔가 생길수도...)')
-            send_log("[이스터에그", message.created_at, message.author, message.channel, message.guild)
-        elif (trim_text == '' or None): return
+            send_log(trim_text, message.created_at, message.author, message.channel, message.guild)
+        
+        # 비어있는 문자이면
+        # elif (trim_text == '' or None): return
+        
+        # 이모티콘 출력
         elif (trim_text in pict_dir.keys()): 
             image = discord.File(pict_dir[trim_text], filename="image.png")
             embed = discord.Embed()
@@ -181,8 +185,8 @@ class MyClient(discord.Client):
             await message.channel.send(embed=embed, file=image)
             await message.delete()
             send_log(trim_text, message.created_at, message.author, message.channel, message.guild)
-        else:
-            return
+            
+        else: return
 
 # Execute Discord Bot
 intents = discord.Intents.default()
