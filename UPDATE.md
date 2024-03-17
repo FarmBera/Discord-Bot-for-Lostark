@@ -2,6 +2,10 @@
 
 For more information, check out the "UPDATE.md" file.
 
+## ver 0.2.4 Release
+
+- 새로운 이모티콘 추가
+
 ## ver 0.2.3 Release
 
 - 토큰 불러오는 코드 수정

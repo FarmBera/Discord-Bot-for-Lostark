@@ -1,3 +1,14 @@
-# lostark-discord-bot-public
+# LoaStickers Discord-Bot
 
-> Not yet commited
+## Required pip Module
+
+- discord (Essential)
+- pillow (for image resize)
+- requests
+- lxml
+<!-- - pycurl (for using crul) -->
+
+- sys
+- json
+- time
+- datetime

@@ -1,6 +1,8 @@
 # MacOS Dump File
 .DS_Store
 
+TOKEN.py
+
 # Image Directory
 image_real
 image
