@@ -1,6 +1,8 @@
-# LoaStickers Discord-Bot
+# << THIS PROJECT IS DEPRECATED >>
 
-## Required pip Module
+## LoaStickers Discord-Bot
+
+### Required pip Module
 
 - discord (Essential)
 - pillow (for image resize)
