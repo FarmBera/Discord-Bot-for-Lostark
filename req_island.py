@@ -225,7 +225,7 @@ def check_new_cal_content(INDEX=0):
     to_send_items = []
     to_send_dates = []
     test = []
-    # TODO: 주말에 보상 중복되면 안나타나는 버그 해결할 것
+    # todo_delay: 주말에 보상 중복되면 안나타나는 버그 해결할 것
     for island in data_list:
         if island["ContentsName"] not in list_island_today:
             continue

@@ -6,8 +6,9 @@ from datetime import datetime, timedelta
 # from MainList import pict_dir
 from TOKEN import TOKEN_API
 from Variables import Base_URL
-from Variables import send_log_request
-send_log = send_log_request
+from Variables import send_log_request as send_log
+
+# send_log = send_log_request
 
 
 response = None
@@ -15,7 +16,7 @@ res_arr = []
 FILENAME = "RequestResult.json"
 LOG_TYPE = "request Notice"  # for logfile
 
-to_send_items = []
+to_send_items: list = []
 to_send_DESC = None
 # res_title: str = None
 # res_date: str = None
@@ -42,7 +43,9 @@ def request_url():
             save_file(response)
             return True
         else:
-            send_log(type=f"Request Response Exception >> {RESPONSE_CODE}", istrue="False")
+            send_log(
+                type=f"Request Response Exception >> {RESPONSE_CODE}", istrue="False"
+            )
             return RESPONSE_CODE
     except Exception as e:
         # print(e)
@@ -75,17 +78,28 @@ def open_file():
 
 # response code check
 def res_code_check(CODE="null"):
-    if CODE == 200: return f"{CODE} OK"
-    elif CODE == 401: return f"{CODE} Unauthorized"
-    elif CODE == 403: return f"{CODE} Forbidden"
-    elif CODE == 404: return f"{CODE} Not Found"
-    elif CODE == 415: return f"{CODE} Unsupported Media Type"
-    elif CODE == 429: return f"{CODE} Rate Limit Exceeded"
-    elif CODE == 500: return f"{CODE} Internal Server Error"
-    elif CODE == 502: return f"{CODE} Bad Gateway"
-    elif CODE == 503: return f"{CODE} Service Unavailable"
-    elif CODE == 504: return f"{CODE} Gateway Timeout"
-    else: return f"Code ERR >> {CODE}"
+    if CODE == 200:
+        return f"{CODE} OK"
+    elif CODE == 401:
+        return f"{CODE} Unauthorized"
+    elif CODE == 403:
+        return f"{CODE} Forbidden"
+    elif CODE == 404:
+        return f"{CODE} Not Found"
+    elif CODE == 415:
+        return f"{CODE} Unsupported Media Type"
+    elif CODE == 429:
+        return f"{CODE} Rate Limit Exceeded"
+    elif CODE == 500:
+        return f"{CODE} Internal Server Error"
+    elif CODE == 502:
+        return f"{CODE} Bad Gateway"
+    elif CODE == 503:
+        return f"{CODE} Service Unavailable"
+    elif CODE == 504:
+        return f"{CODE} Gateway Timeout"
+    else:
+        return f"Code ERR >> {CODE}"
     # return f"ERR"
 
 
@@ -104,9 +118,9 @@ def check_new_article(INDEX=0):
     global to_send_DESC
     to_send_DESC = ""
     to_send_items = []
-    
-    pre_one = open_file()  # save previous content
-    req = request_url()  # save new content
+
+    pre_one = open_file()  # Save previous content
+    req = request_url()  # request new content
 
     if req != True:  # 요쳥 결과 정상이 아닐 때
         to_send_DESC = None
@@ -114,7 +128,7 @@ def check_new_article(INDEX=0):
         return
 
     new_one = open_file()
-    
+
     # 새로운 공지가 없다면 (새로 불러온 결과가 이전과 같다면)
     if new_one == pre_one:
         # print(f"Not Changed")
@@ -131,18 +145,21 @@ def check_new_article(INDEX=0):
         to_send_DESC = None
         # print(f'Empty List >> {to_send_items}')
         return
-    
+
     for item in to_send_items:
         to_send_DESC += f"\n### [{item['Title']}]({item['Link']})"
-        time = datetime.strptime(item['Date'], "%Y-%m-%dT%H:%M:%S.%f").strftime("%Y-%m-%d %H:%M")
+        time = datetime.strptime(item["Date"], "%Y-%m-%dT%H:%M:%S.%f").strftime(
+            "%Y-%m-%d %H:%M"
+        )
         to_send_DESC += f"\n- Posted at {time}"
 
     # print(to_send_DESC)
     send_log(
-        type=LOG_TYPE, 
-        istrue="New Notice", 
-        var1=to_send_items, 
-        var2=to_send_DESC.replace("\n", "  "))
+        type=LOG_TYPE,
+        istrue="New Notice",
+        var1=to_send_items,
+        var2=to_send_DESC.replace("\n", "  "),
+    )
     # print("New Notice Sent!")
     return
 
